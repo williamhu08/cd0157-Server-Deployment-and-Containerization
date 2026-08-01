@@ -31,7 +31,24 @@ phases:
       - echo `kubectl version --short --client`
       - python -m pip install --upgrade --force pip
       - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add
-      - apt-get update && apt-get -y install jq  && pip install --upgrade awscli pytest
+      - |
+        apt-get update || {
+          status=$?
+          echo "ERROR: apt-get update failed with exit status ${status}"
+          exit "${status}"
+        }
+      - |
+        apt-get -y install jq || {
+          status=$?
+          echo "ERROR: failed to install jq; exit status ${status}"
+          exit "${status}"
+        }
+      - |
+        pip install --upgrade awscli pytest || {
+          status=$?
+          echo "ERROR: failed to install or upgrade awscli and pytest; exit status ${status}"
+          exit "${status}"
+        }
   pre_build:
     commands:
       - TAG="$REPOSITORY_NAME.$REPOSITORY_BRANCH.$ENVIRONMENT_NAME.$(date +%Y-%m-%d.%H.%M.%S).$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
