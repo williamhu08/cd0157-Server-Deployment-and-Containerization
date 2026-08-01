@@ -31,7 +31,7 @@ phases:
       - echo `kubectl version --short --client`
       - python -m pip install --upgrade --force pip
       - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add
-      # - apt-get update && echo "apt-get update succeeded"  # this fails
+      - apt-get update || true   # apt-get update fails. But still want it to run just in case it succeeds
       - apt-get -y install jq && echo "apt-get -y install jq" succeeded
       - pip install --upgrade awscli pytest && echo "pip install --upgrade awscli pytest" succeeded
   pre_build:

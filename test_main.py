@@ -29,7 +29,6 @@ def test_health(client):
 
 
 def test_auth(client):
-    assert False, "Asserting False; You can check the tests prevent a bad deployment by breaking the tests on purpose"
     body = {'email': EMAIL,
             'password': PASSWORD}
     response = client.post('/auth', 
