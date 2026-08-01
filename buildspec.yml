@@ -31,6 +31,10 @@ phases:
       - echo `kubectl version --short --client`
       - python -m pip install --upgrade --force pip
       - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add
+      - pip install --upgrade awscli pytest # somehow, this was failing in my build.
+      - command -v jq || { echo "jq not installed"; exit 1; }
+      - echo "Although jq installed, stopping here on purpose"
+      - exit 1
       - apt-get update && apt-get -y install jq  && pip install --upgrade awscli pytest
   pre_build:
     commands:
